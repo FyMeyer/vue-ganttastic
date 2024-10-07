@@ -8,7 +8,8 @@
         :style="{
           background: index % 2 === 0 ? colors.primary : colors.secondary,
           color: colors.text,
-          width
+          width,
+          display: width === '0%' ? 'none' : ''
         }"
       >
         <slot name="upper-timeunit" :label="label" :value="value" :date="date">
@@ -27,7 +28,8 @@
           color: colors.text,
           flexDirection: precision === 'hour' ? 'column' : 'row',
           alignItems: precision === 'hour' ? '' : 'center',
-          width
+          width,
+          display: width === '0%' ? 'none' : ''
         }"
       >
         <slot name="timeunit" :label="label" :value="value" :date="date">

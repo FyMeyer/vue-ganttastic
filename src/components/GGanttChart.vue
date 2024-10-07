@@ -35,7 +35,10 @@
             <slot name="current-time-label" />
           </template>
         </g-gantt-current-time>
-        <div class="g-gantt-rows-container">
+        <div
+          class="g-gantt-rows-container"
+          :style="['overflow-y: auto; overflow-x: hidden', 'height: ' + height]"
+        >
           <slot />
           <!-- the g-gantt-row components go here -->
         </div>
@@ -58,7 +61,8 @@ import {
   useSlots,
   type ComputedRef,
   type Ref,
-  type ToRefs
+  type ToRefs,
+  onMounted
 } from "vue"
 
 import GGanttGrid from "./GGanttGrid.vue"
@@ -90,6 +94,7 @@ export interface GGanttChartProps {
   currentTimeLabel?: string
   dateFormat?: string | false
   width?: string
+  height?: string
   hideTimeaxis?: boolean
   colorScheme?: ColorSchemeKey | ColorScheme
   grid?: boolean
@@ -115,6 +120,7 @@ const props = withDefaults(defineProps<GGanttChartProps>(), {
   dateFormat: DEFAULT_DATE_FORMAT,
   precision: "day",
   width: "100%",
+  height: "100%",
   hideTimeaxis: false,
   colorScheme: "default",
   grid: false,
@@ -187,6 +193,25 @@ const getChartRows = () => {
   })
   return allBars
 }
+
+function horizontalScrollMoveLabel() {
+  const wrapper = document.querySelector(".wrapper") as HTMLElement | null
+
+  if (!wrapper) {
+    console.error("Element '.wrapper' nicht gefunden.")
+    return
+  }
+
+  wrapper.addEventListener("scroll", () => {
+    const labels = document.querySelectorAll(".g-gantt-row-label") as NodeListOf<HTMLElement>
+
+    labels.forEach((label) => {
+      label.style.left = `${wrapper.scrollLeft + 5}px`
+    })
+  })
+}
+
+onMounted(() => horizontalScrollMoveLabel())
 
 const showTooltip = ref(false)
 const isDragging = ref(false)
@@ -289,5 +314,9 @@ provide(EMIT_BAR_EVENT_KEY, emitBarEvent)
 .labels-in-column {
   display: flex;
   flex-direction: row;
+}
+
+.g-gantt-rows-container::-webkit-scrollbar {
+  display: none;
 }
 </style>

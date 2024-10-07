@@ -6,9 +6,10 @@
       class="g-grid-line"
       :style="{
         width,
+        display: width === '0%' ? 'none' : '',
         background: highlightedUnits?.includes(Number(value)) ? colors.hoverHighlight : undefined
       }"
-    />
+    ></div>
   </div>
 </template>
 
@@ -28,7 +29,7 @@ const { timeaxisUnits } = useTimeaxisUnits()
 .g-grid-container {
   position: absolute;
   top: 0;
-  left: 0%;
+  left: 0;
   width: 100%;
   height: 100%;
   display: flex;
