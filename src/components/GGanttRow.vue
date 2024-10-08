@@ -101,7 +101,7 @@ const isBlank = (str: string) => {
   align-items: center;
   height: 60%;
   min-height: 20px;
-  font-size: 0.8em;
+  font-size: 0.7em;
   font-weight: bold;
   border-bottom-right-radius: 6px;
   background: #f2f2f2;

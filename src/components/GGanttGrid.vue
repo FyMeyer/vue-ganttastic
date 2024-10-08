@@ -1,12 +1,11 @@
 <template>
   <div class="g-grid-container">
     <div
-      v-for="{ label, value, width } in timeaxisUnits.lowerUnits"
+      v-for="{ label, value, width } in filteredLowerUnits"
       :key="label"
       class="g-grid-line"
       :style="{
         width,
-        display: width === '0%' ? 'none' : '',
         background: highlightedUnits?.includes(Number(value)) ? colors.hoverHighlight : undefined
       }"
     ></div>
@@ -16,6 +15,7 @@
 <script setup lang="ts">
 import provideConfig from "../provider/provideConfig.js"
 import useTimeaxisUnits from "../composables/useTimeaxisUnits.js"
+import { computed } from "vue"
 
 defineProps<{
   highlightedUnits?: number[]
@@ -23,6 +23,10 @@ defineProps<{
 
 const { colors } = provideConfig()
 const { timeaxisUnits } = useTimeaxisUnits()
+
+const filteredLowerUnits = computed(() =>
+  timeaxisUnits.value.lowerUnits.filter(({ width }) => width !== "0%")
+)
 </script>
 
 <style>

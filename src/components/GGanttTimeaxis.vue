@@ -20,7 +20,7 @@
 
     <div class="g-timeunits-container">
       <div
-        v-for="({ label, value, date, width }, index) in timeaxisUnits.lowerUnits"
+        v-for="({ label, value, date, width }, index) in filteredLowerUnits"
         :key="label"
         class="g-timeunit"
         :style="{
@@ -28,8 +28,7 @@
           color: colors.text,
           flexDirection: precision === 'hour' ? 'column' : 'row',
           alignItems: precision === 'hour' ? '' : 'center',
-          width,
-          display: width === '0%' ? 'none' : ''
+          width: '41.578px'
         }"
       >
         <slot name="timeunit" :label="label" :value="value" :date="date">
@@ -48,9 +47,14 @@
 <script setup lang="ts">
 import provideConfig from "../provider/provideConfig.js"
 import useTimeaxisUnits from "../composables/useTimeaxisUnits.js"
+import { computed } from "vue"
 
 const { precision, colors } = provideConfig()
 const { timeaxisUnits } = useTimeaxisUnits()
+
+const filteredLowerUnits = computed(() =>
+  timeaxisUnits.value.lowerUnits.filter(({ width }) => width !== "0%")
+)
 </script>
 
 <style>
